@@ -6,36 +6,12 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.util.Log
-import com.dhanvi.pmservice.IProfileManagerServiceAidl
+import android.widget.Toast
 
 class PmInstance(private val context: Context) {
-    val TAG = PmInstance::class.java.simpleName
 
-    private val profileManagerIntent = Intent("com.dhanvi.profilemanagerservice.ProfileManagerService").setPackage("com.dhanvi.profilemanagerservice")
-
-    private var profileManagerService: IProfileManagerServiceAidl? = null
-
-    private val profileManagerConnection = object: ServiceConnection {
-        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
-            Log.d(TAG, "Connected to ProfileManager")
-            profileManagerService = IProfileManagerServiceAidl.Stub.asInterface(p1)
-        }
-
-        override fun onServiceDisconnected(p0: ComponentName?) {
-            Log.d(TAG, "Disconnected from ProfileManager")
-        }
-
+    fun showToast() {
+        Toast.makeText(context, "This is a new toast", Toast.LENGTH_SHORT).show()
     }
 
-    fun connect() {
-        context.bindService(profileManagerIntent, profileManagerConnection, Context.BIND_AUTO_CREATE)
-    }
-
-    fun getServiceVersion(): String? {
-        return profileManagerService?.serviceVersion
-    }
-
-    fun getModifiedString(paritalString: String): String? {
-        return profileManagerService?.getModifiedString(paritalString)
-    }
 }
